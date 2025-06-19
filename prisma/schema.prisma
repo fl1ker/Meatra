@@ -32,3 +32,9 @@ model Reservation {
   table   Table @relation(fields: [tableId], references: [id])
   tableId Int // foreign key на Table
 }
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
