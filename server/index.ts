@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
+import menuRoutes from './routes/menu';
 import express from 'express';
 import tableRoutes from './routes/table';
 import reservationRoutes from './routes/reservation';
@@ -15,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/menu', menuRoutes);
 
 app.get('/', (req, res) => {
     res.send('Restaurant API is running 🚀');
