@@ -22,7 +22,7 @@ export const createTable = async (
         const { capacity } = req.body;
 
         if (!capacity) {
-            res.status(400).json({ error: 'Capacity is required' });
+            res.status(400).json({ error: 'Количество мест обязательно' });
             return;
         }
 

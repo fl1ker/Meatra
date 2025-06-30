@@ -23,8 +23,12 @@ export const createReservation = async (
     try {
         const { name, phone, date, time_start, time_end, tableId } = req.body;
 
-        if (!name || !phone || !date || !time_start || !time_end || !tableId) {
-            res.status(400).json({ error: 'Все поля обязательны' });
+        // Проверка существования стола
+        const table = await prisma.table.findUnique({
+            where: { id: Number(tableId) },
+        });
+        if (!table) {
+            res.status(400).json({ error: 'Стол не существует' });
             return;
         }
 
@@ -37,7 +41,7 @@ export const createReservation = async (
                     {
                         AND: [
                             { time_start: { lte: time_end } },
-                            { time_end: { gte: time_start } },
+                            { time_end: { gt: time_start } },
                         ],
                     },
                 ],

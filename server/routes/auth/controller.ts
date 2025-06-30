@@ -9,13 +9,13 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 
         const admin = await prisma.admin.findUnique({ where: { email } });
         if (!admin) {
-            res.status(401).json({ error: 'Invalid credentials' });
+            res.status(401).json({ error: 'Недействительные учетные данные' });
             return;
         }
 
         const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) {
-            res.status(401).json({ error: 'Invalid credentials' });
+            res.status(401).json({ error: 'Недействительные учетные данные' });
             return;
         }
 
@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             process.env.JWT_SECRET!,
             { expiresIn: process.env.JWT_EXPIRES_IN ? parseInt(process.env.JWT_EXPIRES_IN, 10) : '1h' }
         );
-        console.log('Generated token:', token);
+        console.log('Сгенерированный токен:', token);
         res.json({ token });
     } catch (error) {
         console.error(error);
