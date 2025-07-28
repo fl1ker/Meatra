@@ -24,7 +24,6 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             process.env.JWT_SECRET!,
             { expiresIn: process.env.JWT_EXPIRES_IN ? parseInt(process.env.JWT_EXPIRES_IN, 10) : '1h' }
         );
-        console.log('Сгенерированный токен:', token);
         res.json({ token });
     } catch (error) {
         console.error(error);

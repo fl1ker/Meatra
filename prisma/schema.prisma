@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,14 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Таблица стол
 model Table {
   id           Int           @id @default(autoincrement())
   capacity     Int
-  reservations Reservation[] // связь: один стол -> много резерваций
+  reservations Reservation[]
 }
 
-// Таблица бронь
 model Reservation {
   id         Int      @id @default(autoincrement())
   name       String
@@ -28,9 +20,8 @@ model Reservation {
   date       DateTime
   time_start String
   time_end   String
-
-  table   Table @relation(fields: [tableId], references: [id])
-  tableId Int
+  tableId    Int
+  table      Table    @relation(fields: [tableId], references: [id])
 }
 
 model Admin {
@@ -39,33 +30,25 @@ model Admin {
   password String
 }
 
-model Menu {
-  id         Int                      @id @default(autoincrement())
-  name       String                   @unique
-  categories MenuCategoryAssignment[]
+model JobPosition {
+  id           Int              @id @default(autoincrement())
+  name         String           @unique
+  description  String
+  applications JobApplication[]
 }
 
-model MenuCategory {
-  id    Int                      @id @default(autoincrement())
-  name  String
-  menus MenuCategoryAssignment[]
-  items MenuItem[]
+model JobApplication {
+  id         Int         @id @default(autoincrement())
+  fullName   String
+  phone      String
+  positionId Int
+  experience String
+  position   JobPosition @relation(fields: [positionId], references: [id])
 }
 
-model MenuCategoryAssignment {
-  menuId     Int
-  categoryId Int
-  menu       Menu         @relation(fields: [menuId], references: [id], onDelete: Cascade)
-  category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@id([menuId, categoryId])
-}
-
-model MenuItem {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String?
-  price       Float
-  categoryId  Int
-  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+model Event {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  image       String?
 }
